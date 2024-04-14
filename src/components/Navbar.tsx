@@ -7,8 +7,8 @@ export default function Navbar() {
   return (
     <div className="w-full flex p-5">
       <div className="hidden md:block flex-1">Noteflow</div>
-      <div className="w-full flex md:flex-1 justify-around items-center">
-        <Button variant={"default"} className="flex-1 py-5">
+      <div className="w-full flex md:flex-1 justify-around md:gap-5 items-center">
+        <Button variant={"ghost"} className="flex-1 py-5">
           <PlusIcon className="block md:hidden" />
           <span className="hidden md:block">Add board</span>
         </Button>
