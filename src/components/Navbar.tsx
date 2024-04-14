@@ -10,7 +10,7 @@ export default function Navbar() {
       <div className="w-full flex md:flex-1 justify-around md:gap-5 items-center">
         <Button variant={"ghost"} className="flex-1 py-5">
           <PlusIcon className="block md:hidden" />
-          <span className="hidden md:block">Add board</span>
+          <span className="hidden md:block">Add List</span>
         </Button>
         <ThemeButton variant={"ghost"} className="flex-1 py-5" />
       </div>
