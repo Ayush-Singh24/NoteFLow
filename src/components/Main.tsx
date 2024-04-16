@@ -5,7 +5,10 @@ import List from "./List";
 import { useState } from "react";
 
 export default function Main() {
-  const [list, setList] = useState<ListType[]>([]);
+  const noteflow = localStorage.getItem("noteflow");
+  const [lists, setLists] = useState<ListType[]>(
+    noteflow ? JSON.parse(noteflow) : []
+  );
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
   };
