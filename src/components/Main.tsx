@@ -10,6 +10,7 @@ export default function Main() {
   useEffect(() => {
     const noteflow = localStorage.getItem("noteflow");
     if (noteflow) {
+      console.log(JSON.parse(noteflow));
       setLists(JSON.parse(noteflow));
     }
     // localStorage.setItem("noteflow", JSON.stringify(noteflow));

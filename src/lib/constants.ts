@@ -9,6 +9,12 @@ export type ListType = {
   tasks: TaskType[];
 };
 
+export type ModalProps = {
+  children: React.ReactNode;
+  isOpen: boolean;
+  handleClose: () => void;
+};
+
 export const noteflow: ListType[] = [
   {
     id: "123",
