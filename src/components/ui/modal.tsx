@@ -26,7 +26,7 @@ export default function Modal({ children, isOpen, handleClose }: ModalProps) {
         <div className="flex flex-col max-w-[1170px] md:w-1/2 h-[40%] pd-5 md:p-10 mx-auto justify-center items-center gap-2">
           <Button
             className="self-end rounded-full"
-            variant="outline"
+            variant="link"
             onClick={handleClose}
             size={"icon"}
           >
