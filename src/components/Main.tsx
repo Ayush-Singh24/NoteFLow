@@ -1,6 +1,6 @@
 "use client";
 
-import { ListType } from "@/lib/constants";
+import { ListType, noteflow } from "@/lib/constants";
 import List from "./List";
 import { useEffect, useState } from "react";
 
@@ -12,6 +12,7 @@ export default function Main() {
     if (noteflow) {
       setLists(JSON.parse(noteflow));
     }
+    // localStorage.setItem("noteflow", JSON.stringify(noteflow));
   }, []);
 
   const handleDragOver = (e: React.DragEvent) => {
@@ -22,24 +23,15 @@ export default function Main() {
       className="p-5 flex gap-10 flex-wrap justify-center items-start"
       onDragOver={handleDragOver}
     >
-      <List
-        id={"123"}
-        title="To dos"
-        description="Stuffs"
-        tasks={[
-          { id: "123", value: "gaming" },
-          { id: "456", value: "gaming" },
-        ]}
-      />
-      <List
-        id={"456"}
-        title="To dos"
-        description="Stuffs"
-        tasks={[
-          { id: "12", value: "gaming" },
-          { id: "45", value: "gaming" },
-        ]}
-      />
+      {lists &&
+        lists.map((list) => (
+          <List
+            key={list.id}
+            title={list.title}
+            description={list.description}
+            tasks={list.tasks}
+          />
+        ))}
     </main>
   );
 }
