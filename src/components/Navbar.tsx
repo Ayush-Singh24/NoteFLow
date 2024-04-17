@@ -13,16 +13,19 @@ export default function Navbar() {
     <>
       <div className="w-full flex p-5">
         <div className="hidden md:block flex-1">Noteflow</div>
-        <div className="w-full flex md:flex-1 justify-around md:gap-5 items-center">
+        <div className="w-full flex md:flex-1 justify-around md:justify-between md:gap-5 items-center">
           <Button
             variant={"ghost"}
-            className="flex-1 py-5"
+            className="flex-1 md:flex-initial py-5 md:ml-auto"
             onClick={() => setListModalStatus(true)}
           >
             <PlusIcon className="block md:hidden" />
             <span className="hidden md:block">Add List</span>
           </Button>
-          <ThemeButton variant={"ghost"} className="flex-1 py-5" />
+          <ThemeButton
+            variant={"ghost"}
+            className="flex-1 py-5 md:flex-initial"
+          />
         </div>
       </div>
       {listmodalStatus &&
