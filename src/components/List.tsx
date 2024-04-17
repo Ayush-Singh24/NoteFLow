@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { ListType } from "@/lib/constants";
-export default function List({ title, description, tasks }: ListType) {
+export default function List({ id, title, description, tasks }: ListType) {
   return (
     <Card draggable={true} className="w-full md:w-1/5">
       <CardHeader>
@@ -15,7 +15,7 @@ export default function List({ title, description, tasks }: ListType) {
         {description && <CardDescription>{description}</CardDescription>}
       </CardHeader>
       <CardContent className="flex flex-col gap-2">
-        {tasks && tasks.map((task) => <p>{task}</p>)}
+        {tasks && tasks.map((task) => <p key={task.id}>{task.value}</p>)}
       </CardContent>
       <CardFooter>
         <p>Card Footer</p>
