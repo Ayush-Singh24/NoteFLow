@@ -18,13 +18,7 @@ export default function Main({
     >
       {lists &&
         lists.map((list) => (
-          <List
-            key={list.id}
-            id={list.id}
-            title={list.title}
-            description={list.description}
-            tasks={list.tasks}
-          />
+          <List key={list.id} lists={lists} list={list} setLists={setLists} />
         ))}
     </main>
   );

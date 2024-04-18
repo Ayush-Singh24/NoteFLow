@@ -6,37 +6,87 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { ListType } from "@/lib/constants";
+import { ListType, TaskType } from "@/lib/constants";
 import DropTaskIndicator from "./DropTaskIndicator";
-export default function List({ id, title, description, tasks }: ListType) {
+import { CheckIcon, MinusIcon, PlusIcon } from "@radix-ui/react-icons";
+import { Button } from "./ui/button";
+import { ChangeEvent, useState } from "react";
+import { Input } from "./ui/input";
+import { v4 as uuid } from "uuid";
+export default function List({
+  lists,
+  list,
+  setLists,
+}: {
+  lists: ListType[];
+  list: ListType;
+  setLists: (data: ListType[]) => void;
+}) {
+  const [showAddTaskInput, setShowTaskAddInput] = useState<boolean>(false);
+  const [taskInput, setTaskInput] = useState<string>("");
+
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
   };
+
+  const addTask = () => {
+    if (taskInput.length === 0) return;
+    const newTask: TaskType = { id: uuid(), value: taskInput };
+    const newTasks: TaskType[] = [...list.tasks, newTask];
+    const newList: ListType = { ...list, tasks: newTasks };
+    const currListIndex = lists.findIndex((curr) => curr.id === list.id);
+    const newLists = [...lists];
+    newLists[currListIndex] = newList;
+    setLists(newLists);
+    setShowTaskAddInput(false);
+  };
   return (
     <Card
-      key={id}
       draggable
       className="w-full md:w-1/5 cursor-grab active:cursor-grabbing"
       onDragOver={handleDragOver}
     >
       <CardHeader>
-        <CardTitle>{title}</CardTitle>
-        {description && <CardDescription>{description}</CardDescription>}
+        <CardTitle>{list.title}</CardTitle>
+        {list.description && (
+          <CardDescription>{list.description}</CardDescription>
+        )}
       </CardHeader>
       <CardContent className="flex flex-col gap-1">
-        {tasks &&
-          tasks.map((task) => (
+        {list.tasks &&
+          list.tasks.map((task) => (
             <div key={task.id}>
-              <DropTaskIndicator beforeId={task.id} listId={id} />
+              <DropTaskIndicator beforeId={task.id} listId={list.id} />
               <p draggable className="cursor-grab active:cursor-grabbing">
                 {task.value}
               </p>
-              <DropTaskIndicator beforeId={"-1"} listId={id} />
+              <DropTaskIndicator beforeId={"-1"} listId={list.id} />
             </div>
           ))}
+        {showAddTaskInput && (
+          <div className="flex gap-2 items-center">
+            <Input
+              className="p-1"
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                setTaskInput(e.target.value)
+              }
+            />
+            <Button onClick={addTask}>
+              <CheckIcon />
+            </Button>
+          </div>
+        )}
       </CardContent>
       <CardFooter>
-        <p>Card Footer</p>
+        <Button
+          onClick={() =>
+            !showAddTaskInput
+              ? setShowTaskAddInput(true)
+              : setShowTaskAddInput(false)
+          }
+        >
+          {!showAddTaskInput ? <PlusIcon /> : <MinusIcon />}
+        </Button>
       </CardFooter>
     </Card>
   );
