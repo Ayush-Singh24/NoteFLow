@@ -59,7 +59,7 @@ export default function List({
           <CardDescription>{list.description}</CardDescription>
         )}
       </CardHeader>
-      <CardContent className="flex flex-col gap-1">
+      <CardContent className="flex flex-col">
         {list.tasks &&
           list.tasks.map((task) => (
             <div key={task.id}>
@@ -67,7 +67,7 @@ export default function List({
               <p
                 draggable
                 onDragStart={(e) => handleDragStart(e, task)}
-                className="cursor-grab active:cursor-grabbing"
+                className="cursor-grab active:cursor-grabbing p-1 rounded-full"
               >
                 {task.value}
               </p>
