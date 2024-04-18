@@ -1,4 +1,4 @@
-import { ListType, noteflow } from "@/lib/constants";
+import { ListType } from "@/lib/constants";
 import List from "./List";
 
 export default function Main({

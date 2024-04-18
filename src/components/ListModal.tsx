@@ -31,7 +31,7 @@ export default function ListModal({
         id: uuid(),
         title: titleInput,
         description: descriptionInput,
-        tasks: [{ id: uuid(), value: "coding" }],
+        tasks: [],
       },
     ];
     localStorage.setItem("noteflow", JSON.stringify(newLists));
