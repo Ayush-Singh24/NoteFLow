@@ -27,6 +27,7 @@ export default function Main() {
       {lists &&
         lists.map((list) => (
           <List
+            id={list.id}
             key={list.id}
             title={list.title}
             description={list.description}
