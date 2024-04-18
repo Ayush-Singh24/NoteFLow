@@ -14,6 +14,7 @@ export default function List({ id, title, description, tasks }: ListType) {
   };
   return (
     <Card
+      key={id}
       draggable
       className="w-full md:w-1/5 cursor-grab active:cursor-grabbing"
       onDragOver={handleDragOver}
@@ -25,17 +26,13 @@ export default function List({ id, title, description, tasks }: ListType) {
       <CardContent className="flex flex-col gap-1">
         {tasks &&
           tasks.map((task) => (
-            <>
+            <div key={task.id}>
               <DropTaskIndicator beforeId={task.id} listId={id} />
-              <p
-                draggable
-                key={task.id}
-                className="cursor-grab active:cursor-grabbing"
-              >
+              <p draggable className="cursor-grab active:cursor-grabbing">
                 {task.value}
               </p>
               <DropTaskIndicator beforeId={"-1"} listId={id} />
-            </>
+            </div>
           ))}
       </CardContent>
       <CardFooter>

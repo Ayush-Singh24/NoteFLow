@@ -1,4 +1,3 @@
-"use client";
 import { PlusIcon } from "@radix-ui/react-icons";
 import ThemeButton from "./ThemeButton";
 import { Button } from "./ui/button";
@@ -6,8 +5,15 @@ import { useState } from "react";
 import { createPortal } from "react-dom";
 import Modal from "./ui/modal";
 import ListModal from "./ListModal";
+import { ListType } from "@/lib/constants";
 
-export default function Navbar() {
+export default function Navbar({
+  lists,
+  setLists,
+}: {
+  lists: ListType[];
+  setLists: (data: ListType[]) => void;
+}) {
   const [listmodalStatus, setListModalStatus] = useState<boolean>(false);
   return (
     <>
@@ -34,7 +40,11 @@ export default function Navbar() {
             isOpen={listmodalStatus}
             handleClose={() => setListModalStatus(false)}
           >
-            <ListModal />
+            <ListModal
+              lists={lists}
+              setLists={setLists}
+              handleClose={() => setListModalStatus(false)}
+            />
           </Modal>,
           document.body
         )}
