@@ -42,7 +42,10 @@ export default function List({
   };
 
   const handleDragStart = (e: React.DragEvent, task: TaskType) => {
-    e.dataTransfer.setData("taskId", task.id);
+    e.dataTransfer.setData(
+      "deletetask",
+      JSON.stringify({ listId: list.id, taskId: task.id })
+    );
   };
   return (
     <Card

@@ -15,9 +15,56 @@ export default function Navbar({
   setLists: (data: ListType[]) => void;
 }) {
   const [listmodalStatus, setListModalStatus] = useState<boolean>(false);
+  const [isTaskDragging, setIsTaskDragging] = useState<boolean>(false);
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    if (e.dataTransfer.types.includes("deletetask")) {
+      setIsTaskDragging(true);
+    }
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    if (e.dataTransfer.types.includes("deletetask")) {
+      setIsTaskDragging(false);
+    }
+  };
+
+  const handleDragEnd = (e: React.DragEvent) => {
+    if (e.dataTransfer.types.includes("deletetask")) {
+      const deleteTaskInfo = JSON.parse(
+        e.dataTransfer.getData("deletetask")
+      ) as { listId: string; taskId: string };
+      console.log(deleteTaskInfo);
+      const toBeEditedListIndex = lists.findIndex(
+        (curr) => curr.id === deleteTaskInfo.listId
+      );
+
+      if (toBeEditedListIndex === -1) {
+        return;
+      }
+      const newList = {
+        ...lists[toBeEditedListIndex],
+        tasks: lists[toBeEditedListIndex].tasks.filter(
+          (task) => task.id !== deleteTaskInfo.taskId
+        ),
+      };
+
+      const newLists = [...lists];
+      newLists[toBeEditedListIndex] = newList;
+      setLists(newLists);
+      setIsTaskDragging(false);
+    }
+  };
   return (
     <>
-      <div className="w-full flex p-5 sticky top-0 z-10 backdrop-blur-md">
+      <div
+        onDrop={handleDragEnd}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        className={`w-full flex p-5 sticky top-0 z-10 backdrop-blur-md ${
+          isTaskDragging ? "bg-red-100" : ""
+        }`}
+      >
         <div className="hidden md:block flex-1">Noteflow</div>
         <div className="w-full flex md:flex-1 justify-around md:justify-between md:gap-5 items-center">
           <Button
