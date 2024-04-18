@@ -19,7 +19,7 @@ export default function Home() {
   };
 
   return (
-    <section>
+    <section className="flex flex-col min-h-screen">
       <Navbar lists={lists} setLists={hanldleSetLists} />
       <Main lists={lists} setLists={hanldleSetLists} />
     </section>

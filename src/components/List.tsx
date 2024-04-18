@@ -40,6 +40,10 @@ export default function List({
     setLists(newLists);
     setShowTaskAddInput(false);
   };
+
+  const handleDragStart = (e: React.DragEvent, task: TaskType) => {
+    e.dataTransfer.setData("taskId", task.id);
+  };
   return (
     <Card
       draggable
@@ -57,7 +61,11 @@ export default function List({
           list.tasks.map((task) => (
             <div key={task.id}>
               <DropTaskIndicator beforeId={task.id} listId={list.id} />
-              <p draggable className="cursor-grab active:cursor-grabbing">
+              <p
+                draggable
+                onDragStart={(e) => handleDragStart(e, task)}
+                className="cursor-grab active:cursor-grabbing"
+              >
                 {task.value}
               </p>
               <DropTaskIndicator beforeId={"-1"} listId={list.id} />

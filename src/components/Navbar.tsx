@@ -17,7 +17,7 @@ export default function Navbar({
   const [listmodalStatus, setListModalStatus] = useState<boolean>(false);
   return (
     <>
-      <div className="w-full flex p-5">
+      <div className="w-full flex p-5 sticky top-0 z-10 backdrop-blur-md">
         <div className="hidden md:block flex-1">Noteflow</div>
         <div className="w-full flex md:flex-1 justify-around md:justify-between md:gap-5 items-center">
           <Button

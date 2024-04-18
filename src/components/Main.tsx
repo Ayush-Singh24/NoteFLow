@@ -13,7 +13,7 @@ export default function Main({
   };
   return (
     <main
-      className="p-5 flex gap-10 flex-wrap justify-center items-start"
+      className="p-5 flex gap-10 flex-wrap justify-center items-start flex-1"
       onDragOver={handleDragOver}
     >
       {lists &&
