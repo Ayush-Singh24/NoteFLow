@@ -15,14 +15,14 @@ export default function Navbar({
   setLists: (data: ListType[]) => void;
 }) {
   const [listmodalStatus, setListModalStatus] = useState<boolean>(false);
-  const [isTaskDragging, setIsTaskDragging] = useState<boolean>(false);
+  const [isDragging, setIsDragging] = useState<boolean>(false);
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
-    setIsTaskDragging(true);
+    setIsDragging(true);
   };
 
   const handleDragLeave = (e: React.DragEvent) => {
-    setIsTaskDragging(false);
+    setIsDragging(false);
   };
 
   const handleDragEnd = (e: React.DragEvent) => {
@@ -57,7 +57,7 @@ export default function Navbar({
       setLists(newLists);
       localStorage.setItem("noteflow", JSON.stringify(newLists));
     }
-    setIsTaskDragging(false);
+    setIsDragging(false);
   };
   return (
     <>
@@ -65,8 +65,8 @@ export default function Navbar({
         onDrop={handleDragEnd}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
-        className={`w-full flex p-5 sticky top-0 z-10 backdrop-blur-md ${
-          isTaskDragging ? "bg-red-100" : ""
+        className={`w-full flex items-center p-3 sticky top-0 z-10 backdrop-blur-md ${
+          isDragging ? "bg-red-100 dark:bg-red-200 dark:text-black" : ""
         }`}
       >
         <div className="hidden md:block flex-1">Noteflow</div>
