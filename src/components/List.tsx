@@ -90,13 +90,16 @@ export default function List({
     setShowTaskAddInput(false);
   };
 
-  const handleDragStart = (e: React.DragEvent, task: TaskType) => {
+  const handleTaskDragStart = (e: React.DragEvent, task: TaskType) => {
     e.dataTransfer.setData(
       "task",
       JSON.stringify({ listId: list.id, taskId: task.id, value: task.value })
     );
   };
 
+  const handleListDragStart = (e: React.DragEvent, list: ListType) => {
+    e.dataTransfer.setData("list", JSON.stringify(list));
+  };
   const handleDragLeave = () => {
     clearTaskHighlights();
   };
@@ -161,6 +164,7 @@ export default function List({
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDragEnd}
+        onDragStart={(e) => handleListDragStart(e, list)}
       >
         <CardHeader>
           <CardTitle>{list.title}</CardTitle>
@@ -175,7 +179,7 @@ export default function List({
                 <DropTaskIndicator beforeId={task.id} listId={list.id} />
                 <p
                   draggable
-                  onDragStart={(e) => handleDragStart(e, task)}
+                  onDragStart={(e) => handleTaskDragStart(e, task)}
                   className="cursor-grab active:cursor-grabbing p-1 rounded-full"
                 >
                   {task.value}

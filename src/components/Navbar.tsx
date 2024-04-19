@@ -18,15 +18,11 @@ export default function Navbar({
   const [isTaskDragging, setIsTaskDragging] = useState<boolean>(false);
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
-    if (e.dataTransfer.types.includes("task")) {
-      setIsTaskDragging(true);
-    }
+    setIsTaskDragging(true);
   };
 
   const handleDragLeave = (e: React.DragEvent) => {
-    if (e.dataTransfer.types.includes("task")) {
-      setIsTaskDragging(false);
-    }
+    setIsTaskDragging(false);
   };
 
   const handleDragEnd = (e: React.DragEvent) => {
@@ -53,8 +49,16 @@ export default function Navbar({
       const newLists = [...lists];
       newLists[toBeEditedListIndex] = newList;
       setLists(newLists);
-      setIsTaskDragging(false);
     }
+    if (e.dataTransfer.types.includes("list")) {
+      const listToBeDeleted = JSON.parse(
+        e.dataTransfer.getData("list")
+      ) as ListType;
+      const newLists = lists.filter((l) => l.id !== listToBeDeleted.id);
+      setLists(newLists);
+      localStorage.setItem("noteflow", JSON.stringify(newLists));
+    }
+    setIsTaskDragging(false);
   };
   return (
     <>
