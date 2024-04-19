@@ -7,8 +7,8 @@ export default function DropTaskIndicator({
 }) {
   return (
     <div
-      task-before={beforeId || "-1"}
-      task-list={listId}
+      data-before={beforeId || "-1"}
+      data-list={listId}
       className="my-0.5 h-0.5 w-full bg-white opacity-0"
     />
   );

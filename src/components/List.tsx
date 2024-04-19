@@ -27,7 +27,7 @@ export default function List({
 
   const getTaskIndicators = () => {
     return Array.from(
-      document.querySelectorAll<HTMLElement>(`[task-list="${list.id}"]`)
+      document.querySelectorAll<HTMLElement>(`[data-list="${list.id}"]`)
     );
   };
 
@@ -71,7 +71,7 @@ export default function List({
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
-    if (e.dataTransfer.types.includes("deletetask")) {
+    if (e.dataTransfer.types.includes("task")) {
       highlightTaskIndicator(e);
     }
   };
@@ -90,8 +90,8 @@ export default function List({
 
   const handleDragStart = (e: React.DragEvent, task: TaskType) => {
     e.dataTransfer.setData(
-      "deletetask",
-      JSON.stringify({ listId: list.id, taskId: task.id })
+      "task",
+      JSON.stringify({ listId: list.id, taskId: task.id, value: task.value })
     );
   };
 
@@ -99,8 +99,61 @@ export default function List({
     clearTaskHighlights();
   };
 
-  const handleDragEnd = () => {
+  const handleDragEnd = (e: React.DragEvent) => {
     clearTaskHighlights();
+    if (e.dataTransfer.types.includes("task")) {
+      const taskInfo = JSON.parse(e.dataTransfer.getData("task")) as {
+        taskId: string;
+        listId: string;
+        value: string;
+      };
+      const indicators = getTaskIndicators();
+      const { element: nearestElement } = getNearestTaskIndicator(
+        e,
+        indicators
+      );
+      let before: string;
+      if (!nearestElement) {
+        before = "-1";
+      } else {
+        before = nearestElement.dataset.before || "-1";
+      }
+      if (before !== taskInfo.taskId) {
+        let copy = [...list.tasks];
+        // console.log(copy);
+        const taskToTransfer: TaskType = {
+          id: taskInfo.taskId,
+          value: taskInfo.value,
+        };
+        const newListIndex = lists.findIndex((l) => l.id === list.id);
+        const newLists: ListType[] = [...lists];
+        if (list.id === taskInfo.listId) {
+          copy = copy.filter((c) => c.id !== taskInfo.taskId);
+        } else {
+          const oldListIndex = lists.findIndex((l) => l.id === taskInfo.listId);
+          const oldNewTasks: TaskType[] = lists[oldListIndex].tasks.filter(
+            (t) => t.id !== taskInfo.taskId
+          );
+          const oldNewList: ListType = {
+            ...lists[oldListIndex],
+            tasks: oldNewTasks,
+          };
+          newLists[oldListIndex] = oldNewList;
+        }
+        const moveToBack = before === "-1";
+        if (moveToBack) {
+          copy.push(taskToTransfer);
+        } else {
+          const insertAtIndex = copy.findIndex((c) => c.id === before);
+          if (insertAtIndex === undefined) return;
+          copy.splice(insertAtIndex, 0, taskToTransfer);
+        }
+        const newList: ListType = { ...list, tasks: copy };
+        newLists[newListIndex] = newList;
+        setLists(newLists);
+        localStorage.setItem("noteflow", JSON.stringify(newLists));
+      }
+    }
   };
 
   return (

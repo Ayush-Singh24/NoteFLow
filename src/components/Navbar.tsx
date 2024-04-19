@@ -18,22 +18,23 @@ export default function Navbar({
   const [isTaskDragging, setIsTaskDragging] = useState<boolean>(false);
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
-    if (e.dataTransfer.types.includes("deletetask")) {
+    if (e.dataTransfer.types.includes("task")) {
       setIsTaskDragging(true);
     }
   };
 
   const handleDragLeave = (e: React.DragEvent) => {
-    if (e.dataTransfer.types.includes("deletetask")) {
+    if (e.dataTransfer.types.includes("task")) {
       setIsTaskDragging(false);
     }
   };
 
   const handleDragEnd = (e: React.DragEvent) => {
-    if (e.dataTransfer.types.includes("deletetask")) {
-      const deleteTaskInfo = JSON.parse(
-        e.dataTransfer.getData("deletetask")
-      ) as { listId: string; taskId: string };
+    if (e.dataTransfer.types.includes("task")) {
+      const deleteTaskInfo = JSON.parse(e.dataTransfer.getData("task")) as {
+        listId: string;
+        taskId: string;
+      };
       console.log(deleteTaskInfo);
       const toBeEditedListIndex = lists.findIndex(
         (curr) => curr.id === deleteTaskInfo.listId
