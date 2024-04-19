@@ -10,7 +10,7 @@ import { ListType, TaskType } from "@/lib/constants";
 import DropTaskIndicator from "./DropTaskIndicator";
 import { CheckIcon, MinusIcon, PlusIcon } from "@radix-ui/react-icons";
 import { Button } from "./ui/button";
-import { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import { Input } from "./ui/input";
 import { v4 as uuid } from "uuid";
 export default function List({
@@ -25,8 +25,55 @@ export default function List({
   const [showAddTaskInput, setShowTaskAddInput] = useState<boolean>(false);
   const [taskInput, setTaskInput] = useState<string>("");
 
+  const getTaskIndicators = () => {
+    return Array.from(
+      document.querySelectorAll<HTMLElement>(`[task-list="${list.id}"]`)
+    );
+  };
+
+  const getNearestTaskIndicator = (
+    e: React.DragEvent,
+    indicators: HTMLElement[]
+  ) => {
+    const indicator = indicators.reduce(
+      (closest, child) => {
+        const box = child.getBoundingClientRect();
+        const offset = e.clientY - (box.top + 50);
+        if (offset < 0 && offset > closest.offset) {
+          return { offset: offset, element: child };
+        } else {
+          return closest;
+        }
+      },
+      {
+        offset: Number.NEGATIVE_INFINITY,
+        element: indicators[indicators.length - 1],
+      }
+    );
+
+    return indicator;
+  };
+
+  const clearTaskHighlights = (els?: HTMLElement[]) => {
+    const indicators = els || getTaskIndicators();
+    indicators.forEach((indicator) => {
+      indicator.style.opacity = "0";
+    });
+  };
+
+  const highlightTaskIndicator = (e: React.DragEvent) => {
+    const indicators = getTaskIndicators();
+    if (indicators.length === 0) return;
+    clearTaskHighlights(indicators);
+    const indicator = getNearestTaskIndicator(e, indicators);
+    indicator.element.style.opacity = "1";
+  };
+
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
+    if (e.dataTransfer.types.includes("deletetask")) {
+      highlightTaskIndicator(e);
+    }
   };
 
   const addTask = () => {
@@ -47,11 +94,22 @@ export default function List({
       JSON.stringify({ listId: list.id, taskId: task.id })
     );
   };
+
+  const handleDragLeave = () => {
+    clearTaskHighlights();
+  };
+
+  const handleDragEnd = () => {
+    clearTaskHighlights();
+  };
+
   return (
     <Card
       draggable
       className="w-full md:w-1/5 cursor-grab active:cursor-grabbing"
       onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
+      onDrop={handleDragEnd}
     >
       <CardHeader>
         <CardTitle>{list.title}</CardTitle>
