@@ -172,7 +172,7 @@ export default function List({
             <CardDescription>{list.description}</CardDescription>
           )}
         </CardHeader>
-        <CardContent className="flex flex-col gap-0">
+        <CardContent className="flex flex-col">
           {list.tasks &&
             list.tasks.map((task) => (
               <motion.div layout key={task.id}>
@@ -180,7 +180,7 @@ export default function List({
                 <p
                   draggable
                   onDragStart={(e) => handleTaskDragStart(e, task)}
-                  className="cursor-grab active:cursor-grabbing p-1 rounded-full"
+                  className="cursor-grab active:cursor-grabbing p-2 rounded border"
                 >
                   {task.value}
                 </p>
