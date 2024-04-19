@@ -1,6 +1,7 @@
 import { ListType } from "@/lib/constants";
 import List from "./List";
 import { useState } from "react";
+import DropListIndicator from "./DropListIndicator";
 
 export default function Main({
   lists,
@@ -20,7 +21,14 @@ export default function Main({
     >
       {lists &&
         lists.map((list) => (
-          <List key={list.id} lists={lists} list={list} setLists={setLists} />
+          <div
+            key={list.id}
+            className="w-full md:w-1/5 flex justify-between gap-2"
+          >
+            <DropListIndicator />
+            <List lists={lists} list={list} setLists={setLists} />
+            <DropListIndicator />
+          </div>
         ))}
     </main>
   );

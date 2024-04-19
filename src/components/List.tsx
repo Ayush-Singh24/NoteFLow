@@ -157,7 +157,7 @@ export default function List({
   };
 
   return (
-    <motion.div className="w-full md:w-1/5">
+    <motion.div className="w-full">
       <Card
         draggable
         className="cursor-grab active:cursor-grabbing"
