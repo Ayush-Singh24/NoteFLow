@@ -13,6 +13,8 @@ import { Button } from "./ui/button";
 import React, { ChangeEvent, useState } from "react";
 import { Input } from "./ui/input";
 import { v4 as uuid } from "uuid";
+import { motion } from "framer-motion";
+
 export default function List({
   lists,
   list,
@@ -112,12 +114,7 @@ export default function List({
         e,
         indicators
       );
-      let before: string;
-      if (!nearestElement) {
-        before = "-1";
-      } else {
-        before = nearestElement.dataset.before || "-1";
-      }
+      const before = nearestElement.dataset.before || "-1";
       if (before !== taskInfo.taskId) {
         let copy = [...list.tasks];
         // console.log(copy);
@@ -157,59 +154,63 @@ export default function List({
   };
 
   return (
-    <Card
-      draggable
-      className="w-full md:w-1/5 cursor-grab active:cursor-grabbing"
-      onDragOver={handleDragOver}
-      onDragLeave={handleDragLeave}
-      onDrop={handleDragEnd}
-    >
-      <CardHeader>
-        <CardTitle>{list.title}</CardTitle>
-        {list.description && (
-          <CardDescription>{list.description}</CardDescription>
-        )}
-      </CardHeader>
-      <CardContent className="flex flex-col">
-        {list.tasks &&
-          list.tasks.map((task) => (
-            <div key={task.id}>
-              <DropTaskIndicator beforeId={task.id} listId={list.id} />
-              <p
-                draggable
-                onDragStart={(e) => handleDragStart(e, task)}
-                className="cursor-grab active:cursor-grabbing p-1 rounded-full"
-              >
-                {task.value}
-              </p>
-              <DropTaskIndicator beforeId={"-1"} listId={list.id} />
+    <motion.div className="w-full md:w-1/5">
+      <Card
+        draggable
+        className="cursor-grab active:cursor-grabbing"
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDragEnd}
+      >
+        <CardHeader>
+          <CardTitle>{list.title}</CardTitle>
+          {list.description && (
+            <CardDescription>{list.description}</CardDescription>
+          )}
+        </CardHeader>
+        <CardContent className="flex flex-col gap-0">
+          {list.tasks &&
+            list.tasks.map((task) => (
+              <motion.div layout key={task.id}>
+                <DropTaskIndicator beforeId={task.id} listId={list.id} />
+                <p
+                  draggable
+                  onDragStart={(e) => handleDragStart(e, task)}
+                  className="cursor-grab active:cursor-grabbing p-1 rounded-full"
+                >
+                  {task.value}
+                </p>
+              </motion.div>
+            ))}
+          <DropTaskIndicator beforeId={"-1"} listId={list.id} />
+          {showAddTaskInput && (
+            <div className="flex gap-2 items-center">
+              <Input
+                className="p-1"
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  setTaskInput(e.target.value)
+                }
+              />
+              <Button onClick={addTask}>
+                <CheckIcon />
+              </Button>
             </div>
-          ))}
-        {showAddTaskInput && (
-          <div className="flex gap-2 items-center">
-            <Input
-              className="p-1"
-              onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                setTaskInput(e.target.value)
+          )}
+        </CardContent>
+        <CardFooter>
+          <motion.div layout>
+            <Button
+              onClick={() =>
+                !showAddTaskInput
+                  ? setShowTaskAddInput(true)
+                  : setShowTaskAddInput(false)
               }
-            />
-            <Button onClick={addTask}>
-              <CheckIcon />
+            >
+              {!showAddTaskInput ? <PlusIcon /> : <MinusIcon />}
             </Button>
-          </div>
-        )}
-      </CardContent>
-      <CardFooter>
-        <Button
-          onClick={() =>
-            !showAddTaskInput
-              ? setShowTaskAddInput(true)
-              : setShowTaskAddInput(false)
-          }
-        >
-          {!showAddTaskInput ? <PlusIcon /> : <MinusIcon />}
-        </Button>
-      </CardFooter>
-    </Card>
+          </motion.div>
+        </CardFooter>
+      </Card>
+    </motion.div>
   );
 }
