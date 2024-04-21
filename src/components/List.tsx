@@ -87,6 +87,7 @@ export default function List({
     const newLists = [...lists];
     newLists[currListIndex] = newList;
     setLists(newLists);
+    localStorage.setItem("noteflow", JSON.stringify(newLists));
     setShowTaskAddInput(false);
   };
 

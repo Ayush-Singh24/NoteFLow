@@ -49,6 +49,7 @@ export default function Navbar({
       const newLists = [...lists];
       newLists[toBeEditedListIndex] = newList;
       setLists(newLists);
+      localStorage.setItem("noteflow", JSON.stringify(newLists));
     } else if (e.dataTransfer.types.includes("list")) {
       const listToBeDeleted = JSON.parse(
         e.dataTransfer.getData("list")
