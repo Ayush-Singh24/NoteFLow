@@ -87,6 +87,7 @@ export default function Main({
           newLists.splice(insertAtIndex, 0, listInfo);
         }
         setLists(newLists);
+        localStorage.setItem("noteflow", JSON.stringify(newLists));
       }
     }
   };
