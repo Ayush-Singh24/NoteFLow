@@ -1,6 +1,5 @@
 import {
   Card,
-  CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
@@ -57,9 +56,10 @@ export default function ListModal({
           />
         </CardDescription>
       </CardHeader>
-      <CardContent>
-        <p>Adding tasks here is to implemented</p>
-      </CardContent>
+      {/*TODO:*/}
+      {/* <CardContent> */}
+      {/*   <p>Adding tasks here is to implemented</p> */}
+      {/* </CardContent> */}
       <CardFooter>
         <Button
           onClick={() => {
