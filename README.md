@@ -18,8 +18,10 @@ Try it out: https://note-flow-beta.vercel.app
 #### Task
 ![delete task](./screenshots/delete-task.png)
 
-### Drag and Drop to rearrange/delete your lists and tasks
-![drag-drop demo](./screenshots/drag-drop.mp4)
+### Drag and Drop to rearrange/delete your lists and tasks 
+
+https://github.com/user-attachments/assets/37e430bd-267c-458a-b219-561be0e98339
+
 
 ## How to run?
 
